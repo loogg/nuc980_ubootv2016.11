@@ -1,0 +1,57 @@
+if (TARGET_NUC980 || TARGET_NUC980_TOMATO || TARGET_NUC980_ETH2UART || TARGET_NUC980_IOT || TARGET_NUC980_CHILI || TARGET_NUC980_LORAG)
+
+config SYS_BOARD
+	default "nuc980"
+
+config SYS_VENDOR
+	default "nuvoton"
+
+config SYS_SOC
+	default "nuc980"
+
+config SYS_CONFIG_NAME
+	default "nuc980_evb" if TARGET_NUC980
+	default "nuc980_tomato" if TARGET_NUC980_TOMATO
+	default "nuc980_eth2uart" if TARGET_NUC980_ETH2UART
+	default "nuc980_iot" if TARGET_NUC980_IOT
+	default "nuc980_lorag" if TARGET_NUC980_LORAG
+	default "nuc980_chili" if TARGET_NUC980_CHILI
+config NUC980
+	bool
+	default y
+
+config NUC980_HW_CHECKSUM
+	bool
+	default y if TARGET_NUC980_TOMATO
+
+config NUC980_PHY_KSZ8863
+	bool "NUC980 PHY KSZ8863 Support"
+	depends on NUC980_ETH
+	select NUC980_GPIO
+	help
+	  Select this to use KSZ8863 driver otherwsie common driver
+
+config RESET_TO_RETRY
+	bool
+	default y
+
+config BOOT_RETRY_TIME
+	int "Boot retry time"
+	select RESET_TO_RETRY
+	default -1
+
+choice
+		prompt "NUC980 console uart"
+		default NUC980_CONSOLE_UART0
+		depends on NUC980_CONSOLE
+		help
+		Select which uart will provide the console uart
+
+config NUC980_CONSOLE_UART0
+		bool "NUC980 console uart0"
+	
+config NUC980_CONSOLE_UART6
+		bool "NUC980 console uart6"
+endchoice
+
+endif
